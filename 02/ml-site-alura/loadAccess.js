@@ -16,16 +16,18 @@ const loadAccess = (file = '', headers = {x: [], y:''}) => {
       .on('error' , err => reject(err));
     })
   }
+  const convertInt = string => parseInt(string);
   return readCsv(file)
     .then((data) => {
       const result = data.reduce((prevData, currentItem, key )=> {
-        const x  = attributesHeaderX.map(item  => currentItem[item]);
+        const x  = attributesHeaderX.map(item  => convertInt(currentItem[item]));
         prevData.x.push(x);
-        prevData.y.push(currentItem[attributesHeaderY]);
+        prevData.y.push(convertInt(currentItem[attributesHeaderY]));
         return prevData;
       }, {x: [], y: []});
       return result;
     })
+    .catch(err => console.log(err))
 }
 
 export default loadAccess;
